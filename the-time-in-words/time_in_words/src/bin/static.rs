@@ -4,9 +4,17 @@ use std::collections::HashMap;
 #[macro_use]
 extern crate lazy_static;
 
+macro_rules! collections {
+    ($($k:expr => $v:expr), * $(,)?) => {{
+        core::convert::From::from([$(($k,$v),)*])
+    }};
+}
+
+
 lazy_static! {
     static ref DECH: HashMap<u32, &'static str> = 
-    HashMap::from([(1, "one"),
+    HashMap::from(
+        [(1, "one"),
          (2, "two"),
          (3, "three"),
          (4, "four"),
@@ -32,10 +40,11 @@ lazy_static! {
          (19, "nineteen")]);   
           
     static ref TENTHS: HashMap<u32, &'static str> = 
-    HashMap::from([(20, "twenty"),
-         (30, "thirty"),
-         (40, "forty"),
-         (50, "fifty")]);
+    collections!{30 => "thirty", 40 => "forty", 50 => "fifty"};
+    //HashMap::from([(20, "twenty"),
+    //     (30, "thirty"),
+    //     (40, "forty"),
+    //     (50, "fifty")]);
 }
 
 fn time_in_words(h: u32, m: u32) -> String {
