@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/flatland
+flatland.so
+flatland.dylib
+flatland.dll
+flatland.a
+flatland.lib
+flatland-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst
