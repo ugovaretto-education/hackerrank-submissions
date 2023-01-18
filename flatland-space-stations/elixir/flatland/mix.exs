@@ -1,11 +1,11 @@
-defmodule Lisawbook.MixProject do
+defmodule Flatland.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :lisawbook,
+      app: :flatland,
       version: "0.1.0",
-      elixir: "~> 1.12",
+      elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]

@@ -1,21 +1,21 @@
-# Lisawbook
+# Flatland
 
 **TODO: Add description**
 
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `lisawbook` to your list of dependencies in `mix.exs`:
+by adding `flatland` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:lisawbook, "~> 0.1.0"}
+    {:flatland, "~> 0.1.0"}
   ]
 end
 ```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/lisawbook](https://hexdocs.pm/lisawbook).
+be found at <https://hexdocs.pm/flatland>.
 
