@@ -77,7 +77,18 @@ int fairRations(vector<int> &&B) {
 }
 
 int main() {
-  ofstream fout(getenv("OUTPUT_PATH"));
+
+  std::streambuf *buf = nullptr;
+  std::ofstream of;
+  const char *path = getenv("OUTPUT_PATH");
+  if (path) {
+    of.open(path);
+    buf = of.rdbuf();
+  } else {
+    buf = std::cout.rdbuf();
+  }
+
+  ostream fout(buf);
 
   string N_temp;
   getline(cin, N_temp);
@@ -101,8 +112,6 @@ int main() {
   string result = r >= 0 ? to_string(r) : "NO";
 
   fout << result << "\n";
-
-  fout.close(); // ????
 
   return 0;
 }
