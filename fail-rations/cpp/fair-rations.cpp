@@ -5,8 +5,6 @@
 // as of August 2024 Hackerrank does not support C++20
 // resorting to old-style begin/end :-(
 // #include <ranges>
-#include <cassert>
-#include <random>
 #include <string>
 #include <vector>
 
@@ -37,14 +35,13 @@ constexpr bool even(int x) { return x % 2 == 0; }
 constexpr bool odd(int x) { return !even(x); }
 
 bool is_even(const vector<int> &v) {
-  // return fold([](bool acc, bool v) { return acc && even(v); }, true,
-  // begin(v),
-  //             end(v));
-  for (auto i : v) {
-    if (i % 2 != 0) {
-      return false;
-    }
-  }
+  return fold([](bool acc, bool v) { return acc && even(v); }, true, begin(v),
+              end(v));
+  // for (auto i : v) {
+  //   if (i % 2 != 0) {
+  //     return false;
+  //   }
+  // }
   return true;
 }
 
@@ -76,35 +73,30 @@ template <typename T> const T &Get(const Maybe<T> &m) {
   return m.val;
 }
 
-template <typename F, typename T>
-Maybe<T> Compose(const Maybe<T> &m1, const Maybe<T> &m2, F f) {
+template <typename F, typename T, typename U>
+Maybe<T> Apply(const Maybe<T> &m1, const Maybe<U> &m2, F f) {
   if (!m1 || !m2)
     return None<T>();
-  return Just(f(Get<T>(m1), Get<T>(m2)));
+  return Just(f(Get<T>(m1), Get<U>(m2)));
 }
 
 template <typename T> Maybe<T> Sum(const Maybe<T> &m1, const Maybe<T> &m2) {
-  return Compose(m1, m2, [](const T &x, const T &y) { return x + y; });
+  return Apply(m1, m2, [](const T &x, const T &y) { return x + y; });
 }
 
 template <typename F, typename H, typename... T>
-Maybe<H> MCompose(F f, const Maybe<H> &h, const Maybe<T> &...t) {
-  return Compose(h, MCompose(f, t...), f);
+Maybe<H> MApply(F f, const Maybe<H> &h, const Maybe<T> &...t) {
+  return Apply(h, MApply(f, t...), f);
 }
 
 template <typename F, typename H, typename T>
-Maybe<H> MCompose(F f, const Maybe<H> &h, const Maybe<T> &t) {
-  return Compose(h, t, f);
+Maybe<H> MApply(F f, const Maybe<H> &h, const Maybe<T> &t) {
+  return Apply(h, t, f);
 }
-// namespace {
-// random_device rd;  // a seed source for the random number engine
-// mt19937 gen(rd()); // mersenne_twister_engine seeded with rd()
-// uniform_int_distribution<> distrib(0, 1);
-// } // namespace
 
-// works with non random iterators
+// works with non random iterators and with any aritmetic type
 template <typename BiDirIteratorT>
-Maybe<int> fairRations(BiDirIteratorT b, BiDirIteratorT e) {
+auto fairRations(BiDirIteratorT b, BiDirIteratorT e) {
   if (b == e)
     return Just(0);
   if (b == --e) {
@@ -133,9 +125,12 @@ Maybe<int> fairRations(BiDirIteratorT b, BiDirIteratorT e) {
     else if (left != i)
       ++*left;
   }
+  // if first element advance to next because --i is called in next line
   if (i == b)
     ++i;
-  return Sum(Just(2), Sum(fairRations(b, --i), fairRations(++i, e)));
+  // return Sum(Just(2), Sum(fairRations(b, --i), fairRations(++i, e)));
+  return MApply([](auto x, auto y) { return x + y; }, Just(2),
+                fairRations(b, --i), fairRations(++i, e));
 }
 
 int main() {
@@ -166,8 +161,14 @@ int main() {
     int B_item = stoi(B_temp[i]);
     B[i] = B_item;
   }
-  const auto r = fairRations(begin(B), end(B));
-  string result = !r ? "NO" : to_string(Get(r));
+  string result = [&B]() {
+    if (B.size() < 2)
+      return string("NO");
+    if (is_even(B))
+      return string("0");
+    const auto r = fairRations(begin(B), end(B));
+    return !r ? string("NO") : to_string(Get(r));
+  }();
 
   fout << result << "\n";
 
