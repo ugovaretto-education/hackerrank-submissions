@@ -123,7 +123,6 @@ auto fairRations(BiDirIteratorT b, BiDirIteratorT e) {
   // if first element advance to next because --i is called in next line
   if (i == b)
     ++i;
-  // return Sum(Just(2), Sum(fairRations(b, --i), fairRations(++i, e)));
   return MApply([](auto x, auto y) { return x + y; }, Just(2),
                 fairRations(b, --i), fairRations(++i, e));
 }
@@ -174,9 +173,6 @@ string ltrim(const string &str) {
   string s(str);
   s.erase(begin(s),
           find_if(begin(s), end(s), [](char x) { return !isspace(x); }));
-  // s.erase(s.begin(),
-  //         find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace))));
-
   return s;
 }
 
@@ -186,10 +182,6 @@ string rtrim(const string &str) {
   s.erase(
       find_if(rbegin(s), rend(s), [](char x) { return !isspace(x); }).base(),
       end(s));
-  // s.erase(
-  //     find_if(s.rbegin(), s.rend(), not1(ptr_fun<int,
-  //     int>(isspace))).base(), s.end());
-  //
   return s;
 }
 
