@@ -37,11 +37,6 @@ constexpr bool odd(int x) { return !even(x); }
 bool is_even(const vector<int> &v) {
   return fold([](bool acc, bool v) { return acc && even(v); }, true, begin(v),
               end(v));
-  // for (auto i : v) {
-  //   if (i % 2 != 0) {
-  //     return false;
-  //   }
-  // }
   return true;
 }
 
@@ -214,16 +209,3 @@ vector<string> split(const string &str) {
 
   return tokens;
 }
-// int m() {
-//
-//   std::vector<int> v{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-//   // Filter takes a predicate function for evaluation
-//   auto even_numbers =
-//       v | ranges::views::filter([](int x) { return x % 2 == 0; });
-//
-//   for (int n : even_numbers) {
-//     std::cout << n << " ";
-//   }
-//   std::cout << std::endl; // Output: 2 4 6 8 10
-//   return 0;
-// }
