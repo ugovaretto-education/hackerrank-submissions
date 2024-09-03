@@ -82,7 +82,7 @@ Maybe<H> MApply(F f, const Maybe<H> &h, const Maybe<T> &t) {
   return Apply(h, t, f);
 }
 
-// works with non random iterators and with any aritmetic type
+// works with non random iterators and with any arithmetic type
 template <typename BiDirIteratorT>
 auto fairRations(BiDirIteratorT b, BiDirIteratorT e) {
   if (b == e)
@@ -122,7 +122,7 @@ int fairRationsDumb(vector<int> v) {
       return cnt;
     ++v[b];
     if (b == e - 1) {
-      if (odd(v[b])) {
+      if (odd(v[b]) || b == 0) {
         cnt = -1;
         break;
       }
