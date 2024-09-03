@@ -171,10 +171,13 @@ int main() {
       return string("NO");
     if (is_even(B))
       return string("0");
-    // const auto r = fairRations(begin(B), end(B));
-    // return !r ? string("NO") : to_string(Get(r));
+#ifdef DUMB
     const int r = fairRationsDumb(B);
     return r < 0 ? "NO" : to_string(r);
+#else
+    const auto r = fairRations(begin(B), end(B));
+    return !r ? string("NO") : to_string(Get(r));
+#endif
   }();
 
   fout << result << "\n";
