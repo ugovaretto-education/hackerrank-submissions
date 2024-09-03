@@ -1,4 +1,3 @@
-// the code works locally but fails to pass some tests when run online
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -14,13 +13,6 @@ using namespace std;
 string ltrim(const string &);
 string rtrim(const string &);
 vector<string> split(const string &);
-
-/*
- * Complete the 'fairRations' function below.
- *
- * The function is expected to return a STRING.
- * The function accepts INTEGER_ARRAY B as parameter.
- */
 
 template <typename A, typename FwdIt, typename F, typename Ret = A>
 Ret fold(F f, A acc, FwdIt b, FwdIt e) {
@@ -102,30 +94,48 @@ auto fairRations(BiDirIteratorT b, BiDirIteratorT e) {
       return Just(0);
   }
   ++e;
-  auto i = find_if(b, e, [](int x) { return odd(x); });
+  auto i = find_if(b, e, odd);
   if (i == e)
     return Just(0);
   ++*i;
-  auto right = i;
-  ++right;
-  auto left = i;
-  if (left != b)
-    --left;
-  if (right != e && odd(*right)) {
-    ++*right;
-  } else if (left != i && odd(*left)) {
-    ++*left;
-  } else {
-    if (right != e)
-      ++*right;
-    else if (left != i)
-      ++*left;
-  }
-  // if first element advance to next because --i is called in next line
-  if (i == b)
+  auto sum = [](auto x, auto y) { return x + y; };
+  if (++i == e) {
+    --i;
+    *--i += 1;
     ++i;
-  return MApply([](auto x, auto y) { return x + y; }, Just(2),
-                fairRations(b, --i), fairRations(++i, e));
+    return MApply(sum, Just(2), fairRations(b, i));
+  } else {
+    // already advanced to next element in prev if statement
+    *i += 1;
+    return MApply(sum, Just(2), fairRations(i, e));
+  }
+}
+
+int fairRationsDumb(vector<int> v) {
+  int b = 0;
+  int e = v.size();
+  int cnt = 0;
+  while (true) {
+    while (b != e && !odd(v[b]))
+      ++b;
+    if (b == e)
+      return cnt;
+    ++v[b];
+    if (b == e - 1) {
+      if (odd(b)) {
+        cnt = -1;
+        break;
+      }
+      ++v[b - 1];
+      e = b;
+      b = 0;
+      cnt += 2;
+    } else {
+      ++v[b + 1];
+      cnt += 2;
+    }
+  }
+  return cnt;
 }
 
 int main() {
@@ -161,8 +171,10 @@ int main() {
       return string("NO");
     if (is_even(B))
       return string("0");
-    const auto r = fairRations(begin(B), end(B));
-    return !r ? string("NO") : to_string(Get(r));
+    // const auto r = fairRations(begin(B), end(B));
+    // return !r ? string("NO") : to_string(Get(r));
+    const int r = fairRationsDumb(B);
+    return r < 0 ? "NO" : to_string(r);
   }();
 
   fout << result << "\n";
