@@ -122,7 +122,7 @@ int fairRationsDumb(vector<int> v) {
       return cnt;
     ++v[b];
     if (b == e - 1) {
-      if (odd(b)) {
+      if (odd(v[b])) {
         cnt = -1;
         break;
       }
