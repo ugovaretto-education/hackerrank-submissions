@@ -16,3 +16,7 @@ erl_crash.dump
 .elixir_ls/mp*
 .vscode
 .idea
+\#*
+*~
+.project.el
+.projectile
