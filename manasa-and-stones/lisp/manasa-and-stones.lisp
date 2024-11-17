@@ -39,8 +39,20 @@
           (unique (cdr xs) ys)
           (progn (setf ys (cons (car xs) ys)) (unique (cdr xs) ys)))))
 
-;; (sort
-;;  (unique
-;;   (mapcar #'car
-;;           (reverse-chunks
-;;            (get-permutations '(2 3) 3 '()) 3 '(0))) ()) #'<)
+(defun calc (n a b)
+  (sort
+   (unique
+    (mapcar (lambda (c) (apply #'+ c))
+            (reverse-chunks
+             (get-permutations (list a b) n '()) n '(0))) ()) #'<))
+
+(defun calc-cases (&aux (results '(nil)))
+  (dotimes (i (read) (cdr results))
+    (setf results (concatenate results
+                               (calc (- (read) 1) (read) (read))))))
+
+(defun main ()
+  (dolist (r (calc-cases))
+    (dolist (i r)
+      (format t "~A " i)
+      (format t "~%"))))
