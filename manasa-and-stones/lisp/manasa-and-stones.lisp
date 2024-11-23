@@ -3,7 +3,7 @@
       ys
       (if (member (car xs) ys)
           (unique (cdr xs) ys)
-          (unique (cdr xs) (cons (car xs) ys)))))
+        (unique (cdr xs) (cons (car xs) ys)))))
 
 (defun calc-res (n a b &aux (s '()))
   (dotimes (i n (sort (unique s) #'<))
@@ -21,7 +21,6 @@
     (dolist (i r)
       (format t "~A " i))
     (format t "~%")))
-
 
 ;; (main)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -68,41 +67,3 @@
 ;;    ;;(unique
 ;;     ;;(mapcar (lambda (c) (apply #'+ c))
 ;;              (gen-sums-no-perm (list a b) (1- n)) #'<))
-
-
-;; (defun gen-permutations (elem-kinds num-elements elements &aux (xs '(0)))
-;;     (if (zerop num-elements)
-;;         elements
-;;         (dolist (k elem-kinds (cdr xs))
-;;           (setf xs (concatenate 'list xs
-;;                  (gen-permutations elem-kinds
-;;                        (- num-elements 1)
-;;                        (cons k elements)))))))
-
-
-;; (defun chunks (ls n xs)
-;;   (if (null ls) (return-from chunks xs)
-;;       (let ((ts '()))
-;;         (dotimes (_ n)
-;;           (setf ts (cons (car ls) ts))
-;;           (setf ls (cdr ls)))
-;;         (chunks ls n (cons ts xs)))))
-
-
-
-;; (defun get-perms (elem-kinds num-elements elements &aux (xs (list 0)))
-;;     (if (zerop num-elements)
-;;         elements
-;;         (dolist (k elem-kinds (cdr xs))
-;;           (nconc xs
-;;                  (get-perms elem-kinds
-;;                        (1- num-elements)
-;;                        (cons k elements))))))
-
-;; (defun chunks (ls n xs &aux (ts '(nil)))
-;;   (if (null ls) (return-from chunks (cdr xs)))
-;;   (dotimes (_ n)
-;;     (setf ts (cons (car ls) ts))
-;;     (setf ls (cdr ls)))
-;;   (nconc xs (list (cdr (reverse ts))))
-;;   (chunks ls n xs))
