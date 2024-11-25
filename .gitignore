@@ -20,3 +20,5 @@ erl_crash.dump
 *~
 .project.el
 .projectile
+*.fasl
+*.FASL
