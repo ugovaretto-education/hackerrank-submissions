@@ -4,15 +4,30 @@
         collect num))
 
 (defun read-grid (num-lines &aux (grid '()))
-  (dotimes (_ num-lines grid)
+  (dotimes (_ num-lines (reverse grid))
     (push (chars-to-nums (read-line)) grid )))
 
 
-(defun solve (grid pattern)
-  (let ((row-end (- (array-dimension grid 0) (array-dimension pattern 0)))
-        (col-end (- (array-dimension grid 1) (array-dimension pattern 1)))
+(defun print-array-2d (m &aux
+                           (height (array-dimension m 0))
+                           (width (array-dimension m 1)))
+  ;;(format t "~&~%")
+  (dotimes (row height)
+    (dotimes (col width)
+      (format t "~A" (aref m row col)))
+    (format t "~%")))
+
+
+(defun pattern-match (grid pattern)
+  (print-array-2d grid)
+  (format t  "~%")
+  (print-array-2d pattern)
+  (let ((row-end (1+ (- (array-dimension grid 0) (array-dimension pattern 0))))
+        (col-end (1+ (- (array-dimension grid 1) (array-dimension pattern 1))))
         (pattern-rows (array-dimension pattern 0))
         (pattern-cols (array-dimension pattern 1)))
+    (format t "~&row-end: ~A col-end: ~A pattern-rows: ~A pattern-cols: ~A~%"
+            row-end col-end pattern-rows pattern-cols)
     (dotimes (row row-end nil) ;; return false if it reaches the end
       (dotimes (col col-end)
         (if
@@ -24,7 +39,7 @@
                     (p (aref pattern r c)))
                 (if (not (= g p)) (return-from match-pattern nil)
                     ())))))
-         (return-from solve t))))));; return true if pattern matches
+         (return-from pattern-match t))))));; return true if pattern matches
 
 (defun main (args)
   (declare (ignore args))
@@ -34,10 +49,10 @@
            (pattern-size (list (read) (read)))
            (pattern (read-grid (car pattern-size))))
       (if
-       (solve
+       (pattern-match
         (make-array grid-size :initial-contents grid)
         (make-array pattern-size :initial-contents pattern))
-       (print "YES")
-       (print "NO")))))
+       (format t "~&YES")
+       (format t "~&NO")))))
 
 ;;(main)
